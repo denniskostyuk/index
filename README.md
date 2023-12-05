@@ -22,7 +22,7 @@ where date(p.payment_date) = '2005-07-30' and p.payment_date = r.rental_date and
 
 Анализ показал, что время выполнения исходного SQL-запроса составляет 10719 м.сек.  
 Узкое место = SQL-запрос обрабатывает лишние таблицы: inventory, rental и film.  
-SQL-апрос после оптимизации:  
+SQL-запрос после оптимизации:  
 
 select distinct concat(c.last_name, ' ', c.first_name), sum(p.amount) over (partition by c.customer_id)  
 from payment p, customer c  
