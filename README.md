@@ -33,5 +33,5 @@ where date(p.payment_date) >= '2005-07-30' AND date(p.payment_date) < DATE_ADD('
 GROUP BY c.customer_id;   
 
 Скрин EXPLAIN ANALYZE:
-
+![Скрин1-комментарий](https://github.com/denniskostyuk/index/blob/main/task-2.png)
 
