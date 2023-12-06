@@ -21,11 +21,17 @@ where date(p.payment_date) = '2005-07-30' and p.payment_date = r.rental_date and
 ### Ответ 2
 
 Анализ показал, что время выполнения исходного SQL-запроса составляет 10719 м.сек.  
-Узкое место = SQL-запрос обрабатывает лишние таблицы: inventory, rental и film.  
+Узкое место = SQL-запрос обрабатывает лишняя таблица: film.  
 SQL-запрос после оптимизации:  
 
-select distinct concat(c.last_name, ' ', c.first_name), sum(p.amount) over (partition by c.customer_id)  
-from payment p, customer c  
-where date(p.payment_date) = '2005-07-30' and p.customer_id = c.customer_id;  
+select concat(c.last_name, ' ', c.first_name), sum(p.amount)  
+from payment p  
+join rental r on p.payment_date = r.rental_date  
+join customer c on r.customer_id = c.customer_id  
+join inventory i on i.inventory_id = r.inventory_id  
+where date(p.payment_date) >= '2005-07-30' AND date(p.payment_date) < DATE_ADD('2005-07-30', INTERVAL 1 DAY)  
+GROUP BY c.customer_id;   
 
-Время выполнения оптимизированного SQL-запроса = 18,9 м.сек.  
+Скрин EXPLAIN ANALYZE:
+
+
